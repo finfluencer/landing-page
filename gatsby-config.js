@@ -3,8 +3,17 @@
  */
 module.exports = {
   siteMetadata: {
-    title: `finfluencer`,
-    siteUrl: `https://www.yourdomain.tld`,
+    title: "Finfluencer - AI-Powered Trading Insights",
+    description:
+      "Never miss a market move with AI-powered buy/sell alerts and plain-English insights.",
+    siteUrl: `https://www.finfluencer.ai`,
   },
-  plugins: [],
-}
+  plugins: [
+    {
+      resolve: `gatsby-plugin-postcss`,
+      options: {
+        postCssPlugins: [require("tailwindcss"), require("autoprefixer")],
+      },
+    },
+  ],
+};
