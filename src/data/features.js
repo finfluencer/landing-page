@@ -1,50 +1,60 @@
-export const featureSlides = [
+// Image imports
+import discoverInfluencersImg from "../images/discover-influencers.jpeg";
+import newsVideosShortsImg from "../images/news-videos-shorts.jpeg";
+import discoverThemesImg from "../images/discover-themes.jpeg";
+import portfolioAIRecommendationsImg from "../images/portfolio-AI-recommnedations.jpeg";
+
+export const features = [
   {
-    id: 1,
-    imageSrc: "/images/discover-influencers.jpeg",
+    id: "influencer-insights",
     title: "Influencer Insights",
-    description:
-      "Get summarized picks from India's top finance YouTubers like Akshat Shrivastava and Rachna Ranade. No need to watch every video—get the gist in seconds with curated recommendations from trusted financial experts.",
+    imageSrc: discoverInfluencersImg,
     bullets: [
-      "Summarized picks from India's top finance YouTubers",
-      "See what Akshat Shrivastava, Rachna Ranade, and more are recommending",
-      "No need to watch every video—get the gist in seconds",
+      "Track 50+ top Indian financial influencers",
+      "Get real-time recommendations from Akshat Shrivastava, Rachna Ranade",
+      "Smart filtering by investment style and risk tolerance",
+      "Historical performance tracking of influencer calls",
     ],
+    description:
+      "Stay ahead of market trends by following India's most trusted financial influencers. Our AI aggregates and analyzes recommendations from top experts, giving you instant access to their latest insights on Indian stocks, mutual funds, and investment strategies.",
   },
   {
-    id: 2,
-    imageSrc: "/images/news-videos-shorts.jpeg",
+    id: "news-digest",
     title: "News Digest",
-    description:
-      "Stay informed with 1-minute summaries of the day's most important financial news. Understand market moves and government policies with curated, plain-English updates that keep you ahead of the curve.",
+    imageSrc: newsVideosShortsImg,
     bullets: [
-      "1-minute summaries of the day's most important financial news",
-      "Understand market moves and government policies",
-      "Stay ahead with curated, plain-English updates",
+      "AI-summarized market news in under 60 seconds",
+      "Focus on Indian markets: NSE, BSE, and major stocks",
+      "YouTube video summaries from financial channels",
+      "Breaking news alerts for your portfolio stocks",
     ],
+    description:
+      "Cut through the noise with AI-powered news summaries tailored for Indian investors. Get the essential market updates, earnings reports, and policy changes that matter to your portfolio - all condensed into bite-sized, actionable insights.",
   },
   {
-    id: 3,
-    imageSrc: "/images/discover-themes.jpeg",
+    id: "theme-explorer",
     title: "Theme Explorer",
-    description:
-      "Discover trending sectors like EV, IT, Banking, and Green Energy with simple explanations of why these themes matter. Spot investment opportunities before the crowd catches on.",
+    imageSrc: discoverThemesImg,
     bullets: [
-      "Discover trending sectors: EV, IT, Banking, Green Energy, etc.",
-      "Learn why these themes matter—explained simply",
-      "Spot opportunities before the crowd",
+      "Discover trending investment themes in India",
+      "EV revolution, Digital India, Green Energy sectors",
+      "Curated stock lists for each theme",
+      "Performance tracking and sector analysis",
     ],
+    description:
+      "Explore emerging investment themes shaping India's future. From electric vehicles to fintech disruption, discover curated investment opportunities in high-growth sectors before they become mainstream.",
   },
   {
-    id: 4,
-    imageSrc: "/images/portfolio-AI-recommnedations.jpeg",
+    id: "easy-execution",
     title: "Easy Execution",
-    description:
-      "Connect your broker like Zerodha, Upstox, or Groww to act on investment ideas instantly. You can also just learn and follow without any pressure to trade—it's completely up to you.",
+    imageSrc: portfolioAIRecommendationsImg,
     bullets: [
-      "Connect your broker (Zerodha, Upstox, Groww, etc.)",
-      "Act on ideas instantly, or just learn and follow",
-      "No pressure—trade only if you want to",
+      "One-click integration with Zerodha, Upstox, Groww",
+      "Smart order placement with risk management",
+      "Portfolio rebalancing suggestions",
+      "Tax-efficient investment strategies",
     ],
+    description:
+      "Turn insights into action with seamless broker integration. Execute trades directly from our platform while maintaining smart risk controls and tax optimization for Indian investors.",
   },
 ];

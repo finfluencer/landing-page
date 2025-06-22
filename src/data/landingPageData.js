@@ -1,3 +1,12 @@
+import React from "react";
+
+// Image imports
+import discoverInfluencersImg from "../images/discover-influencers.jpeg";
+import newsVideosShortsImg from "../images/news-videos-shorts.jpeg";
+import discoverThemesImg from "../images/discover-themes.jpeg";
+import portfolioAIRecommendationsImg from "../images/portfolio-AI-recommnedations.jpeg";
+import portfolioHealthImg from "../images/portfolio-health.jpeg";
+
 // Hero Section Data
 export const heroData = {
   headline: "India's Personal Finance Influencer in Your Pocket",
@@ -40,11 +49,13 @@ export const sampleSignal = {
     "3 top YouTubers, including Akshat Shrivastava and Rachna Ranade, recommend Wipro this week. Key reason: Strong Q4 results and digital growth.",
 };
 
-export const featureSlides = [
+export const featuresData = [
   {
-    id: 1,
-    imageSrc: "/images/discover-influencers.jpeg",
     title: "Influencer Insights",
+    description:
+      "Get summarized picks from India's top finance YouTubers like Akshat Shrivastava and Rachna Ranade. No need to watch every video—get the gist in seconds.",
+    icon: "📊",
+    imageSrc: discoverInfluencersImg,
     bullets: [
       "Summarized picks from India's top finance YouTubers",
       "See what Akshat Shrivastava, Rachna Ranade, and more are recommending",
@@ -52,9 +63,11 @@ export const featureSlides = [
     ],
   },
   {
-    id: 2,
-    imageSrc: "/images/news-videos-shorts.jpeg",
     title: "News Digest",
+    description:
+      "Stay informed with 1-minute summaries of the day's most important financial news. Understand market moves and government policies.",
+    icon: "📰",
+    imageSrc: newsVideosShortsImg,
     bullets: [
       "1-minute summaries of the day's most important financial news",
       "Understand market moves and government policies",
@@ -62,9 +75,11 @@ export const featureSlides = [
     ],
   },
   {
-    id: 3,
-    imageSrc: "/images/discover-themes.jpeg",
     title: "Theme Explorer",
+    description:
+      "Discover trending sectors like EV, IT, Banking, and Green Energy with simple explanations. Spot investment opportunities before the crowd.",
+    icon: "🎯",
+    imageSrc: discoverThemesImg,
     bullets: [
       "Discover trending sectors: EV, IT, Banking, Green Energy, etc.",
       "Learn why these themes matter—explained simply",
@@ -72,9 +87,11 @@ export const featureSlides = [
     ],
   },
   {
-    id: 4,
-    imageSrc: "/images/portfolio-AI-recommnedations.jpeg",
     title: "Easy Execution",
+    description:
+      "Connect your broker like Zerodha, Upstox, or Groww to act on investment ideas instantly. You can also just learn and follow.",
+    icon: "⚡",
+    imageSrc: portfolioAIRecommendationsImg,
     bullets: [
       "Connect your broker (Zerodha, Upstox, Groww, etc.)",
       "Act on ideas instantly, or just learn and follow",
@@ -187,23 +204,31 @@ export const faqData = [
 ];
 
 export const deepDiveData = {
-  imageSrc: "/images/portfolio-health.jpeg",
-  callouts: [
+  title: "Portfolio Health at a Glance",
+  subtitle: "Complete Investment Overview",
+  description:
+    "Track your entire investment portfolio with real-time insights, performance analytics, and AI-powered recommendations tailored for Indian markets.",
+  imageSrc: portfolioHealthImg,
+  features: [
     {
-      point: 1,
-      text: "Real-time P&L tracking across all positions",
+      title: "Real-time Portfolio Tracking",
+      description: "Monitor your investments across all brokers in one place",
+      icon: "📊",
     },
     {
-      point: 2,
-      text: "AI-powered diversification and theme recommendations",
+      title: "Performance Analytics",
+      description: "Detailed insights into your portfolio performance",
+      icon: "📈",
     },
     {
-      point: 3,
-      text: "Tax-loss harvesting and Indian tax tips",
+      title: "Risk Assessment",
+      description: "AI-powered risk analysis and diversification suggestions",
+      icon: "🛡️",
     },
     {
-      point: 4,
-      text: "Risk metrics and portfolio health score explained simply",
+      title: "Tax Optimization",
+      description: "Smart tax-saving strategies for Indian investors",
+      icon: "��",
     },
   ],
 };

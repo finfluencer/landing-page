@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { featureSlides } from "../data/features";
+import { features } from "../data/features";
 import { cn } from "../utils/cn";
 import ScreenshotContainer from "./ScreenshotContainer";
 
@@ -11,7 +11,7 @@ const FeatureCarousel = () => {
 
   // Preload all images to prevent flicker
   useEffect(() => {
-    const imagePromises = featureSlides.map((slide) => {
+    const imagePromises = features.map((slide) => {
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = resolve;
@@ -29,20 +29,18 @@ const FeatureCarousel = () => {
     if (!isAutoPlay) return;
 
     const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % featureSlides.length);
+      setCurrentSlide((prev) => (prev + 1) % features.length);
     }, 5000);
 
     return () => clearInterval(interval);
   }, [isAutoPlay]);
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % featureSlides.length);
+    setCurrentSlide((prev) => (prev + 1) % features.length);
   };
 
   const prevSlide = () => {
-    setCurrentSlide(
-      (prev) => (prev - 1 + featureSlides.length) % featureSlides.length
-    );
+    setCurrentSlide((prev) => (prev - 1 + features.length) % features.length);
   };
 
   const goToSlide = (index) => {
@@ -96,8 +94,8 @@ const FeatureCarousel = () => {
                     {/* Left Side - Image/Mockup */}
                     <div className="flex items-center justify-center order-2 md:order-1">
                       <ScreenshotContainer
-                        imageSrc={featureSlides[currentSlide].imageSrc}
-                        alt={`${featureSlides[currentSlide].title} app screenshot`}
+                        imageSrc={features[currentSlide].imageSrc}
+                        alt={`${features[currentSlide].title} app screenshot`}
                         animate={false}
                         scale={0.7}
                         className="w-full max-w-full"
@@ -108,19 +106,19 @@ const FeatureCarousel = () => {
                     <div className="flex flex-col justify-center order-1 md:order-2 space-y-3">
                       <div className="text-center md:text-left">
                         <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2 text-text-primary pt-10 md:pt-0">
-                          {featureSlides[currentSlide].title}
+                          {features[currentSlide].title}
                         </h3>
 
                         {/* Mobile: Paragraph Description */}
                         <div className="block md:hidden">
                           <p className="text-text-secondary text-sm leading-relaxed max-w-lg mx-auto">
-                            {featureSlides[currentSlide].description}
+                            {features[currentSlide].description}
                           </p>
                         </div>
 
                         {/* Desktop: Bullet Points */}
                         <div className="hidden md:block space-y-2 max-w-lg mx-auto md:mx-0">
-                          {featureSlides[currentSlide].bullets.map(
+                          {features[currentSlide].bullets.map(
                             (bullet, index) => (
                               <div
                                 key={index}
@@ -181,7 +179,7 @@ const FeatureCarousel = () => {
 
               {/* Dot Indicators */}
               <div className="flex justify-center mt-5 gap-2">
-                {featureSlides.map((_, index) => (
+                {features.map((_, index) => (
                   <button
                     key={index}
                     onClick={() => goToSlide(index)}
@@ -201,9 +199,7 @@ const FeatureCarousel = () => {
                   className="h-full bg-primary-blue"
                   initial={{ width: "0%" }}
                   animate={{
-                    width: `${
-                      ((currentSlide + 1) / featureSlides.length) * 100
-                    }%`,
+                    width: `${((currentSlide + 1) / features.length) * 100}%`,
                   }}
                   transition={{ duration: 0.5 }}
                 />

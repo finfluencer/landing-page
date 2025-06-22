@@ -2,41 +2,54 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import ScreenshotContainer from "./ScreenshotContainer";
 
-const HeroScreenshotCarousel = ({ className = "" }) => {
-  // Dashboard screenshots for the carousel
-  const dashboardScreenshots = [
-    {
-      src: "/images/dashboard-landing.jpeg",
-      alt: "Dashboard Landing - Portfolio Overview",
-    },
-    {
-      src: "/images/portfolio-health.jpeg",
-      alt: "Portfolio Health Analysis",
-    },
-    {
-      src: "/images/portfolio-AI-recommnedations.jpeg",
-      alt: "AI-Powered Investment Recommendations",
-    },
-    {
-      src: "/images/dashboard-headlines.jpeg",
-      alt: "Financial News Headlines",
-    },
-    {
-      src: "/images/dashboard-financial-goals.jpeg",
-      alt: "Financial Goals Tracking",
-    },
-    {
-      src: "/images/discover-influencers.jpeg",
-      alt: "Discover Top Financial Influencers",
-    },
-  ];
+// Image imports
+import dashboardLandingImg from "../images/dashboard-landing.jpeg";
+import portfolioHealthImg from "../images/portfolio-health.jpeg";
+import portfolioAIRecommendationsImg from "../images/portfolio-AI-recommnedations.jpeg";
+import dashboardHeadlinesImg from "../images/dashboard-headlines.jpeg";
+import dashboardFinancialGoalsImg from "../images/dashboard-financial-goals.jpeg";
+import discoverInfluencersImg from "../images/discover-influencers.jpeg";
 
+const screenshots = [
+  {
+    id: 1,
+    src: dashboardLandingImg,
+    alt: "Dashboard Landing View",
+  },
+  {
+    id: 2,
+    src: portfolioHealthImg,
+    alt: "Portfolio Health Overview",
+  },
+  {
+    id: 3,
+    src: portfolioAIRecommendationsImg,
+    alt: "AI-Powered Recommendations",
+  },
+  {
+    id: 4,
+    src: dashboardHeadlinesImg,
+    alt: "Market Headlines Dashboard",
+  },
+  {
+    id: 5,
+    src: dashboardFinancialGoalsImg,
+    alt: "Financial Goals Tracking",
+  },
+  {
+    id: 6,
+    src: discoverInfluencersImg,
+    alt: "Discover Influencers",
+  },
+];
+
+const HeroScreenshotCarousel = ({ className = "" }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [imagesLoaded, setImagesLoaded] = useState(false);
 
   // Preload all images to prevent flicker
   useEffect(() => {
-    const imagePromises = dashboardScreenshots.map((screenshot) => {
+    const imagePromises = screenshots.map((screenshot) => {
       return new Promise((resolve, reject) => {
         const img = new Image();
         img.onload = resolve;
@@ -55,11 +68,11 @@ const HeroScreenshotCarousel = ({ className = "" }) => {
     if (!imagesLoaded) return; // Don't start auto-scroll until images are loaded
 
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % dashboardScreenshots.length);
+      setCurrentIndex((prev) => (prev + 1) % screenshots.length);
     }, 3000); // Change every 3 seconds
 
     return () => clearInterval(interval);
-  }, [dashboardScreenshots.length, imagesLoaded]);
+  }, [screenshots.length, imagesLoaded]);
 
   return (
     <div className={`relative ${className}`}>
@@ -104,8 +117,8 @@ const HeroScreenshotCarousel = ({ className = "" }) => {
                   <AnimatePresence mode="wait">
                     <motion.img
                       key={currentIndex}
-                      src={dashboardScreenshots[currentIndex].src}
-                      alt={dashboardScreenshots[currentIndex].alt}
+                      src={screenshots[currentIndex].src}
+                      alt={screenshots[currentIndex].alt}
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
@@ -114,7 +127,7 @@ const HeroScreenshotCarousel = ({ className = "" }) => {
                       loading="eager"
                       onError={(e) => {
                         console.error(
-                          `Failed to load image: ${dashboardScreenshots[currentIndex].src}`
+                          `Failed to load image: ${screenshots[currentIndex].src}`
                         );
                         e.target.style.display = "none";
                       }}
