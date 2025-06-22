@@ -1,8 +1,11 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { benefitsData } from "../data/landingPageData";
+import { useModal } from "../context/ModalContext";
 
 const BenefitGrid = () => {
+  const { openModal } = useModal();
+
   return (
     <section className="py-20 section-padding bg-background-surface/50">
       <div className="container-max">
@@ -72,8 +75,18 @@ const BenefitGrid = () => {
               decisions
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-primary">Start Free Trial</button>
-              <button className="btn-secondary">Schedule Demo</button>
+              <button
+                onClick={() => openModal("waitlist")}
+                className="btn-primary"
+              >
+                Start Free Trial
+              </button>
+              <button
+                onClick={() => openModal("contact")}
+                className="btn-secondary"
+              >
+                Schedule Demo
+              </button>
             </div>
           </div>
         </motion.div>

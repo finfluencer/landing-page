@@ -2,17 +2,42 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { heroData } from "../data/landingPageData";
 import { cn } from "../utils/cn";
+import HeroScreenshotCarousel from "./HeroScreenshotCarousel";
 
 const Hero = () => {
   const [email, setEmail] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
-  const handleEmailSubmit = (e) => {
+  const handleEmailSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Integrate with backend/email service
-    console.log("Email submitted:", email);
-    setIsSubmitted(true);
-    setTimeout(() => setIsSubmitted(false), 3000);
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "hero-email-capture",
+          email: email,
+        }).toString(),
+      });
+
+      if (response.ok) {
+        setIsSubmitted(true);
+        setEmail("");
+        setTimeout(() => setIsSubmitted(false), 5000);
+      } else {
+        throw new Error("Submission failed");
+      }
+    } catch (error) {
+      setSubmitError("Something went wrong. Please try again.");
+      setTimeout(() => setSubmitError(""), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const scrollToSection = (sectionId) => {
@@ -34,7 +59,7 @@ const Hero = () => {
 
       {/* Content Container */}
       <div className="relative z-10 section-padding container-max">
-        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen py-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen py-40 md:py-20">
           {/* Left Side - Hero Content */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -70,32 +95,64 @@ const Hero = () => {
               className="max-w-md lg:mx-0 mx-auto mb-6"
             >
               <form
+                name="hero-email-capture"
+                method="POST"
+                data-netlify="true"
+                data-netlify-honeypot="bot-field"
                 onSubmit={handleEmailSubmit}
                 className="flex flex-col sm:flex-row gap-4"
               >
+                {/* Hidden form name input for Netlify */}
+                <input
+                  type="hidden"
+                  name="form-name"
+                  value="hero-email-capture"
+                />
+
+                {/* Honeypot field for spam protection */}
+                <input type="hidden" name="bot-field" />
+
                 <input
                   type="email"
+                  name="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
                   required
-                  className="flex-1 px-4 py-3 rounded-lg bg-background-surface border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent"
+                  disabled={isSubmitting}
+                  className="flex-1 px-4 py-3 rounded-lg bg-background-surface border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent disabled:opacity-50"
                 />
                 <button
                   type="submit"
-                  disabled={isSubmitted}
+                  disabled={isSubmitted || isSubmitting}
                   className={cn(
-                    "btn-primary whitespace-nowrap",
-                    isSubmitted && "bg-primary-green hover:bg-primary-green"
+                    "btn-primary whitespace-nowrap min-w-[140px]",
+                    isSubmitted && "bg-primary-green hover:bg-primary-green",
+                    isSubmitting && "opacity-75 cursor-not-allowed"
                   )}
                 >
-                  {isSubmitted ? "✓ Subscribed!" : heroData.ctaText}
+                  {isSubmitting
+                    ? "Submitting..."
+                    : isSubmitted
+                    ? "✓ Subscribed!"
+                    : heroData.ctaText}
                 </button>
               </form>
+
+              {/* Error Message */}
+              {submitError && (
+                <motion.p
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="text-primary-red text-sm mt-2 text-center lg:text-left"
+                >
+                  {submitError}
+                </motion.p>
+              )}
             </motion.div>
 
             {/* Secondary CTA */}
-            <motion.div
+            {/* <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.8, duration: 0.8 }}
@@ -117,221 +174,17 @@ const Hero = () => {
                 </svg>
                 {heroData.secondaryCtaText}
               </button>
-            </motion.div>
+            </motion.div> */}
           </motion.div>
 
-          {/* Right Side - Dashboard Mockup */}
+          {/* Right Side - Screenshot Carousel */}
           <motion.div
             initial={{ opacity: 0, x: 30 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 0.4, duration: 0.8 }}
-            className="relative hidden lg:block"
+            className="relative flex justify-center lg:justify-start lg:pl-20"
           >
-            {/* Dashboard Container - Partially Cropped */}
-            <div className="relative overflow-hidden">
-              {/* Main Dashboard */}
-              <motion.div
-                initial={{ x: 100 }}
-                animate={{ x: 20 }}
-                transition={{ delay: 0.6, duration: 1 }}
-                className="bg-background-surface border border-border rounded-2xl p-6 shadow-2xl w-[120%] glow-effect"
-              >
-                {/* Dashboard Header */}
-                <div className="flex items-center justify-between mb-6">
-                  <h3 className="text-xl font-bold text-text-primary">
-                    Portfolio
-                  </h3>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 bg-primary-green rounded-full animate-pulse" />
-                    <span className="text-sm text-text-secondary">Live</span>
-                  </div>
-                </div>
-
-                {/* Portfolio Value */}
-                <div className="mb-6">
-                  <div className="text-3xl font-bold text-text-primary mb-1">
-                    ₹12,78,340.52
-                  </div>
-                  <div className="text-primary-green text-sm flex items-center gap-1">
-                    <svg
-                      className="w-4 h-4"
-                      fill="currentColor"
-                      viewBox="0 0 20 20"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M5.293 7.707a1 1 0 010-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L6.707 7.707a1 1 0 01-1.414 0z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    +12.4% (₹1,41,280.32) Today
-                  </div>
-                </div>
-
-                {/* Stock Holdings */}
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center justify-between p-3 bg-background rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-primary-blue rounded-full flex items-center justify-center text-xs font-bold">
-                        RIL
-                      </div>
-                      <div>
-                        <div className="font-semibold text-text-primary">
-                          RELIANCE
-                        </div>
-                        <div className="text-xs text-text-secondary">
-                          234 shares
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold text-text-primary">
-                        ₹2,34,500
-                      </div>
-                      <div className="text-primary-green text-sm">+2.3%</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-background rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-primary-purple rounded-full flex items-center justify-center text-xs font-bold">
-                        TCS
-                      </div>
-                      <div>
-                        <div className="font-semibold text-text-primary">
-                          TCS
-                        </div>
-                        <div className="text-xs text-text-secondary">
-                          47 shares
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold text-text-primary">
-                        ₹1,89,200
-                      </div>
-                      <div className="text-primary-green text-sm">+0.8%</div>
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between p-3 bg-background rounded-lg">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 bg-primary-green rounded-full flex items-center justify-center text-xs font-bold">
-                        INF
-                      </div>
-                      <div>
-                        <div className="font-semibold text-text-primary">
-                          INFY
-                        </div>
-                        <div className="text-xs text-text-secondary">
-                          112 shares
-                        </div>
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="font-semibold text-text-primary">
-                        ₹3,12,000
-                      </div>
-                      <div className="text-primary-green text-sm">+5.7%</div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* AI Insights Panel */}
-                <div className="bg-gradient-to-r from-primary-blue/10 to-primary-purple/10 rounded-lg p-4 border border-primary-blue/20">
-                  <h4 className="font-semibold text-text-primary mb-3 flex items-center gap-2">
-                    <div className="w-6 h-6 bg-primary-blue rounded-full flex items-center justify-center">
-                      <span className="text-xs">🤖</span>
-                    </div>
-                    AI Insights
-                  </h4>
-                  <div className="space-y-2 text-sm">
-                    <div className="flex items-center gap-2 text-primary-green">
-                      <div className="w-2 h-2 bg-primary-green rounded-full" />
-                      Strong Buy Signal: HDFC - 87% confidence
-                    </div>
-                    <div className="flex items-center gap-2 text-yellow-400">
-                      <div className="w-2 h-2 bg-yellow-400 rounded-full" />
-                      Market volatility detected in banking sector
-                    </div>
-                    <div className="flex items-center gap-2 text-primary-blue">
-                      <div className="w-2 h-2 bg-primary-blue rounded-full" />
-                      Consider taking profits on INFY position
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-
-              {/* Mobile App Mockup - Floating */}
-              <motion.div
-                initial={{ opacity: 0, scale: 0.8, y: 50 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                transition={{ delay: 1, duration: 0.8 }}
-                className="absolute -bottom-8 -left-16 z-10"
-              >
-                <div className="bg-black rounded-3xl p-2 shadow-2xl transform rotate-12 hover:rotate-6 transition-transform duration-300">
-                  <div className="bg-background-surface rounded-2xl p-4 w-64 h-80 overflow-hidden">
-                    {/* Mobile App Header */}
-                    <div className="flex items-center justify-between mb-4">
-                      <div className="text-sm font-bold text-text-primary">
-                        Finfluencer
-                      </div>
-                      <div className="flex gap-1">
-                        <div className="w-1 h-1 bg-primary-green rounded-full" />
-                        <div className="w-1 h-1 bg-primary-green rounded-full" />
-                        <div className="w-1 h-1 bg-primary-green rounded-full" />
-                      </div>
-                    </div>
-
-                    {/* Notification */}
-                    <div className="bg-primary-blue/20 border border-primary-blue/40 rounded-lg p-3 mb-4">
-                      <div className="flex items-center gap-2 mb-2">
-                        <div className="w-4 h-4 bg-primary-blue rounded-full" />
-                        <span className="text-xs font-semibold text-primary-blue">
-                          Buy Alert
-                        </span>
-                      </div>
-                      <div className="text-sm text-text-primary font-semibold">
-                        HDFC Bank
-                      </div>
-                      <div className="text-xs text-text-secondary">
-                        AI Confidence: 92%
-                      </div>
-                    </div>
-
-                    {/* Quick Stats */}
-                    <div className="grid grid-cols-2 gap-2 mb-4">
-                      <div className="bg-background rounded-lg p-2">
-                        <div className="text-xs text-text-secondary">
-                          Today's P&L
-                        </div>
-                        <div className="text-sm font-bold text-primary-green">
-                          +₹14,128
-                        </div>
-                      </div>
-                      <div className="bg-background rounded-lg p-2">
-                        <div className="text-xs text-text-secondary">
-                          Signals
-                        </div>
-                        <div className="text-sm font-bold text-text-primary">
-                          3 Active
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Quick Actions */}
-                    <div className="space-y-2">
-                      <button className="w-full bg-primary-blue hover:bg-primary-blue/90 text-white text-sm py-2 rounded-lg transition-colors">
-                        Execute Trade
-                      </button>
-                      <button className="w-full bg-background-secondary hover:bg-background text-text-primary text-sm py-2 rounded-lg transition-colors">
-                        View Analysis
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
-            </div>
+            <HeroScreenshotCarousel className="w-full max-w-sm lg:max-w-md" />
           </motion.div>
         </div>
 

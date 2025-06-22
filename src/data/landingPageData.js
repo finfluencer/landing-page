@@ -1,7 +1,8 @@
 // Hero Section Data
 export const heroData = {
-  headline: "Never Miss a Market Move",
-  subheadline: "AI-powered buy/sell alerts & plain-English insights",
+  headline: "India's Personal Finance Influencer in Your Pocket",
+  subheadline:
+    "Get the best investment ideas, news, and influencer insights—summarized for you. No jargon, just actionable ideas.",
   ctaText: "Get Early Access",
   secondaryCtaText: "Watch Demo",
 };
@@ -10,162 +11,183 @@ export const heroData = {
 export const howItWorksSteps = [
   {
     icon: "🔗",
-    title: "Connect Your Broker",
-    description: "Securely link your brokerage account in seconds",
+    title: "Connect or Follow",
+    description: "Link your broker or just follow along—no experience needed.",
   },
   {
-    icon: "🤖",
-    title: "Get AI-Driven Signals",
-    description: "Receive personalized trading alerts and insights",
+    icon: "📰",
+    title: "Get Curated Summaries",
+    description:
+      "Receive daily digests of market news, YouTube videos, and top influencer picks.",
   },
   {
-    icon: "⚡",
-    title: "Trade in One Tap",
-    description: "Execute trades instantly with our seamless interface",
+    icon: "💡",
+    title: "Act on Insights",
+    description:
+      "See simple, actionable ideas and execute trades in one tap (if you want).",
   },
 ];
 
-// Sample Signal Data
+// Sample Signal/Insight Data
 export const sampleSignal = {
-  symbol: "AAPL",
-  direction: "BUY",
-  confidence: 87,
-  time: "2 min ago",
-  price: "$185.42",
-  change: "+2.3%",
+  symbol: "WIPRO",
+  direction: "INFLUENCER PICK",
+  confidence: 92,
+  time: "Today",
+  price: "₹1,650.20",
+  change: "+1.8%",
+  summary:
+    "3 top YouTubers, including Akshat Shrivastava and Rachna Ranade, recommend Wipro this week. Key reason: Strong Q4 results and digital growth.",
 };
 
 export const featureSlides = [
   {
     id: 1,
-    imageSrc: "/images/dashboard-mockup.png",
-    title: "Smart Dashboard",
+    imageSrc: "/images/discover-influencers.jpeg",
+    title: "Influencer Insights",
     bullets: [
-      "Real-time portfolio tracking",
-      "AI-powered insights",
-      "One-click trade execution",
+      "Summarized picks from India's top finance YouTubers",
+      "See what Akshat Shrivastava, Rachna Ranade, and more are recommending",
+      "No need to watch every video—get the gist in seconds",
     ],
   },
   {
     id: 2,
-    imageSrc: "/images/news-mockup.png",
-    title: "News Intelligence",
+    imageSrc: "/images/news-videos-shorts.jpeg",
+    title: "News Digest",
     bullets: [
-      "Sentiment analysis",
-      "Market-moving events",
-      "Personalized alerts",
+      "1-minute summaries of the day's most important financial news",
+      "Understand market moves and government policies",
+      "Stay ahead with curated, plain-English updates",
     ],
   },
   {
     id: 3,
-    imageSrc: "/images/discover-mockup.png",
-    title: "Discover Opportunities",
-    bullets: ["AI stock screening", "Trend identification", "Risk assessment"],
+    imageSrc: "/images/discover-themes.jpeg",
+    title: "Theme Explorer",
+    bullets: [
+      "Discover trending sectors: EV, IT, Banking, Green Energy, etc.",
+      "Learn why these themes matter—explained simply",
+      "Spot opportunities before the crowd",
+    ],
   },
   {
     id: 4,
-    imageSrc: "/images/portfolio-mockup.png",
-    title: "Portfolio Health",
+    imageSrc: "/images/portfolio-AI-recommnedations.jpeg",
+    title: "Easy Execution",
     bullets: [
-      "Performance analytics",
-      "Diversification insights",
-      "Tax optimization",
+      "Connect your broker (Zerodha, Upstox, Groww, etc.)",
+      "Act on ideas instantly, or just learn and follow",
+      "No pressure—trade only if you want to",
     ],
   },
 ];
 
 export const benefitsData = [
   {
-    icon: "⚡",
-    title: "Instant Alerts",
-    description: "Get notified the moment opportunities arise",
+    icon: "🧠",
+    title: "No Jargon, Just Insights",
+    description:
+      "We explain every idea in plain English—perfect for beginners.",
   },
   {
-    icon: "📊",
-    title: "Smart Analytics",
-    description: "AI-powered insights to guide your decisions",
+    icon: "⏱️",
+    title: "Save Hours Every Week",
+    description:
+      "Get all the research, news, and influencer picks in one place.",
   },
   {
-    icon: "🛡️",
-    title: "Risk Management",
-    description: "Automated stop-loss and portfolio protection",
+    icon: "📈",
+    title: "Learn as You Go",
+    description: "Simple explanations for every insight and theme.",
   },
   {
-    icon: "💰",
-    title: "Tax Optimization",
-    description: "Maximize returns with tax-efficient strategies",
-  },
-  {
-    icon: "📱",
-    title: "Mobile First",
-    description: "Trade on the go with our intuitive mobile app",
+    icon: "🔔",
+    title: "Never Miss an Opportunity",
+    description: "Stay ahead of market trends and influencer recommendations.",
   },
   {
     icon: "🔒",
-    title: "Bank-Level Security",
-    description: "Your data and funds are protected with enterprise security",
+    title: "Secure & Private",
+    description: "Your data is protected with bank-level security.",
+  },
+  {
+    icon: "🇮🇳",
+    title: "Made for India",
+    description: "Curated for Indian investors, by Indian experts.",
   },
 ];
 
 export const testimonials = [
   {
     id: 1,
-    avatar: "JD",
-    name: "John D.",
-    text: "Finfluencer's AI alerts helped me catch a 15% move in TSLA before the market opened. Game changer!",
+    avatar: "RJ",
+    name: "Rajesh Jain",
+    designation: "Financial Advisor",
+    text: "This concept could revolutionize how beginners approach investing. Having all the best financial influencers' insights in one place would save countless hours of research.",
     rating: 5,
   },
   {
     id: 2,
-    avatar: "SM",
-    name: "Sarah M.",
-    text: "The plain-English explanations make complex market moves actually understandable. Love it!",
+    avatar: "PS",
+    name: "Priya Singh",
+    designation: "Investment Enthusiast",
+    text: "I spend hours watching different YouTubers for market insights. An app that summarizes the best picks from trusted influencers would be incredibly valuable for wealth building.",
     rating: 5,
   },
   {
     id: 3,
-    avatar: "RK",
-    name: "Robert K.",
-    text: "Finally, a trading app that doesn't overwhelm me with charts and jargon. Clean and intuitive.",
+    avatar: "AK",
+    name: "Amit Kumar",
+    designation: "Working Professional",
+    text: "As someone who's too busy to follow all the financial news and influencer content, this concept addresses exactly what I need—curated, actionable insights for smart investing.",
+    rating: 5,
+  },
+  {
+    id: 4,
+    avatar: "SK",
+    name: "Sneha Kapoor",
+    designation: "Finance Student",
+    text: "Learning from India's top financial minds in bite-sized summaries would accelerate anyone's investment journey. This could democratize quality financial education.",
     rating: 5,
   },
 ];
 
 export const faqData = [
   {
-    question: "How do I connect my broker?",
+    question: "Do I need to know about stocks?",
     answer:
-      "We support secure API connections with major brokers including TD Ameritrade, E*TRADE, and Interactive Brokers. Your credentials are encrypted and never stored on our servers.",
+      "No! We explain everything in plain English. You can just follow along and learn as you go.",
+  },
+  {
+    question: "Can I trade from the app?",
+    answer:
+      "You can connect your broker (Zerodha, Upstox, Groww, etc.) and execute trades, but you don't have to. You can just use the app for insights and learning.",
+  },
+  {
+    question: "Where do the insights come from?",
+    answer:
+      "We summarize news, YouTube videos, and influencer recommendations using AI. Influencers include Akshat Shrivastava, Rachna Ranade, and more.",
   },
   {
     question: "Is my data secure?",
     answer:
-      "Yes, we use bank-level encryption and security protocols. Your trading data is protected with 256-bit SSL encryption and we're SOC 2 Type II compliant.",
+      "Yes, we use bank-level encryption and security protocols. Your trading data is protected with 256-bit SSL encryption and we're fully compliant with Indian regulations.",
   },
   {
     question: "What's free vs premium?",
     answer:
-      "Free tier includes basic alerts and portfolio tracking. Premium adds real-time signals, advanced analytics, and unlimited trades starting at $19/month.",
+      "Free tier includes daily news and influencer summaries. Premium adds advanced analytics, theme tracking, and unlimited insights starting at ₹149/month.",
   },
   {
     question: "Can I paper trade first?",
     answer:
-      "Absolutely! We offer a paper trading mode so you can test our AI signals with virtual money before risking real capital.",
-  },
-  {
-    question: "What markets do you support?",
-    answer:
-      "Currently we support US stocks, ETFs, and options. Crypto and international markets are coming soon!",
-  },
-  {
-    question: "How accurate are the AI signals?",
-    answer:
-      "Our AI models have shown 73% accuracy in backtesting over the past 2 years. Past performance doesn't guarantee future results.",
+      "Absolutely! We offer a paper trading mode so you can test ideas with virtual money before risking real capital.",
   },
 ];
 
 export const deepDiveData = {
-  imageSrc: "/images/portfolio-health-screen.png",
+  imageSrc: "/images/portfolio-health.jpeg",
   callouts: [
     {
       point: 1,
@@ -173,15 +195,15 @@ export const deepDiveData = {
     },
     {
       point: 2,
-      text: "AI-powered diversification recommendations",
+      text: "AI-powered diversification and theme recommendations",
     },
     {
       point: 3,
-      text: "Tax-loss harvesting opportunities",
+      text: "Tax-loss harvesting and Indian tax tips",
     },
     {
       point: 4,
-      text: "Risk metrics and portfolio health score",
+      text: "Risk metrics and portfolio health score explained simply",
     },
   ],
 };

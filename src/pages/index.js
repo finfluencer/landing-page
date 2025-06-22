@@ -1,4 +1,5 @@
 import React from "react";
+import { ModalProvider } from "../context/ModalContext";
 import Hero from "../components/Hero";
 import FeatureCarousel from "../components/FeatureCarousel";
 import DemoVideo from "../components/DemoVideo";
@@ -6,45 +7,47 @@ import HowItWorks from "../components/HowItWorks";
 import LiveSignalWidget from "../components/LiveSignalWidget";
 import BenefitGrid from "../components/BenefitGrid";
 import Testimonials from "../components/Testimonials";
-import DeepDive from "../components/DeepDive";
+import DeepDiveOriginal from "../components/DeepDive";
 import FAQ from "../components/FAQ";
 import Footer from "../components/Footer";
 
 const IndexPage = () => {
   return (
-    <main className="min-h-screen bg-background text-text-primary">
-      {/* Hero Section */}
-      <Hero />
+    <ModalProvider>
+      <main className="min-h-screen bg-background text-text-primary">
+        {/* Hero Section */}
+        <Hero />
 
-      {/* Feature Spotlight Carousel */}
-      <section id="feature-carousel">
-        <FeatureCarousel />
-      </section>
+        {/* Feature Spotlight Carousel */}
+        <section id="feature-carousel">
+          <FeatureCarousel />
+        </section>
 
-      {/* 60-Second Demo Video */}
-      <DemoVideo />
+        {/* 60-Second Demo Video */}
+        {/* <DemoVideo /> */}
 
-      {/* How It Works Steps */}
-      <HowItWorks />
+        {/* How It Works Steps */}
+        <HowItWorks />
 
-      {/* Live Signal Widget */}
-      <LiveSignalWidget />
+        {/* Live Signal Widget */}
+        <LiveSignalWidget />
 
-      {/* Benefit Grid */}
-      <BenefitGrid />
+        {/* Benefit Grid */}
+        <BenefitGrid />
 
-      {/* Testimonials Carousel */}
-      <Testimonials />
+        {/* Testimonials Carousel */}
+        <Testimonials />
 
-      {/* Deep-Dive Screenshot Section */}
-      <DeepDive />
+        {/* Deep-Dive Screenshot Section */}
+        {/* <DeepDiveOriginal /> */}
 
-      {/* FAQ Accordion */}
-      <FAQ />
+        {/* FAQ Accordion */}
+        <FAQ />
 
-      {/* Footer with Modals */}
-      <Footer />
-    </main>
+        {/* Footer with Modals */}
+        <Footer />
+      </main>
+    </ModalProvider>
   );
 };
 

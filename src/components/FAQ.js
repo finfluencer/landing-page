@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { faqData } from "../data/landingPageData";
 import { cn } from "../utils/cn";
+import { useModal } from "../context/ModalContext";
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const { openModal } = useModal();
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -109,8 +111,18 @@ const FAQ = () => {
               Finfluencer
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="btn-primary">Contact Support</button>
-              <button className="btn-secondary">Join Community</button>
+              <button
+                onClick={() => openModal("contact")}
+                className="btn-primary"
+              >
+                Contact Support
+              </button>
+              <button
+                onClick={() => openModal("waitlist")}
+                className="btn-secondary"
+              >
+                Join Community
+              </button>
             </div>
           </div>
         </motion.div>

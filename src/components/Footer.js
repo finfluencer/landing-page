@@ -1,42 +1,183 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useModal } from "../context/ModalContext";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
   const [isNewsletterSubscribed, setIsNewsletterSubscribed] = useState(false);
-  const [showContactModal, setShowContactModal] = useState(false);
-  const [showFeatureModal, setShowFeatureModal] = useState(false);
-  const [showWaitlistModal, setShowWaitlistModal] = useState(false);
+  const [isNewsletterSubmitting, setIsNewsletterSubmitting] = useState(false);
+  const {
+    showContactModal,
+    showFeatureModal,
+    showWaitlistModal,
+    openModal,
+    closeModal,
+  } = useModal();
 
-  const handleNewsletterSubmit = (e) => {
+  // Form states
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    email: "",
+    inquiry: "General Inquiry",
+    message: "",
+  });
+  const [featureForm, setFeatureForm] = useState({
+    title: "",
+    description: "",
+    categories: [],
+  });
+  const [waitlistForm, setWaitlistForm] = useState({
+    email: "",
+    interest: "I'm interested in...",
+  });
+
+  // Submission states
+  const [contactSubmitting, setContactSubmitting] = useState(false);
+  const [featureSubmitting, setFeatureSubmitting] = useState(false);
+  const [waitlistSubmitting, setWaitlistSubmitting] = useState(false);
+  const [contactSuccess, setContactSuccess] = useState(false);
+  const [featureSuccess, setFeatureSuccess] = useState(false);
+  const [waitlistSuccess, setWaitlistSuccess] = useState(false);
+
+  const handleNewsletterSubmit = async (e) => {
     e.preventDefault();
-    // TODO: Integrate with newsletter service
-    console.log("Newsletter subscription:", email);
-    setIsNewsletterSubscribed(true);
-    setTimeout(() => setIsNewsletterSubscribed(false), 3000);
-    setEmail("");
-  };
+    setIsNewsletterSubmitting(true);
 
-  const openModal = (modalType) => {
-    switch (modalType) {
-      case "contact":
-        setShowContactModal(true);
-        break;
-      case "feature":
-        setShowFeatureModal(true);
-        break;
-      case "waitlist":
-        setShowWaitlistModal(true);
-        break;
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "newsletter-subscription",
+          email: email,
+        }).toString(),
+      });
+
+      if (response.ok) {
+        setIsNewsletterSubscribed(true);
+        setEmail("");
+        setTimeout(() => setIsNewsletterSubscribed(false), 5000);
+      } else {
+        throw new Error("Submission failed");
+      }
+    } catch (error) {
+      console.error("Newsletter subscription error:", error);
+    } finally {
+      setIsNewsletterSubmitting(false);
     }
-    document.body.style.overflow = "hidden";
   };
 
-  const closeModal = () => {
-    setShowContactModal(false);
-    setShowFeatureModal(false);
-    setShowWaitlistModal(false);
-    document.body.style.overflow = "unset";
+  const handleContactSubmit = async (e) => {
+    e.preventDefault();
+    setContactSubmitting(true);
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "contact-form",
+          name: contactForm.name,
+          email: contactForm.email,
+          inquiry: contactForm.inquiry,
+          message: contactForm.message,
+        }).toString(),
+      });
+
+      if (response.ok) {
+        setContactSuccess(true);
+        setContactForm({
+          name: "",
+          email: "",
+          inquiry: "General Inquiry",
+          message: "",
+        });
+        setTimeout(() => {
+          setContactSuccess(false);
+          closeModal();
+        }, 2000);
+      } else {
+        throw new Error("Submission failed");
+      }
+    } catch (error) {
+      console.error("Contact form error:", error);
+    } finally {
+      setContactSubmitting(false);
+    }
+  };
+
+  const handleFeatureSubmit = async (e) => {
+    e.preventDefault();
+    setFeatureSubmitting(true);
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "feature-suggestion",
+          title: featureForm.title,
+          description: featureForm.description,
+          categories: featureForm.categories.join(", "),
+        }).toString(),
+      });
+
+      if (response.ok) {
+        setFeatureSuccess(true);
+        setFeatureForm({ title: "", description: "", categories: [] });
+        setTimeout(() => {
+          setFeatureSuccess(false);
+          closeModal();
+        }, 2000);
+      } else {
+        throw new Error("Submission failed");
+      }
+    } catch (error) {
+      console.error("Feature suggestion error:", error);
+    } finally {
+      setFeatureSubmitting(false);
+    }
+  };
+
+  const handleWaitlistSubmit = async (e) => {
+    e.preventDefault();
+    setWaitlistSubmitting(true);
+
+    try {
+      const response = await fetch("/", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+          "form-name": "waitlist-form",
+          email: waitlistForm.email,
+          interest: waitlistForm.interest,
+        }).toString(),
+      });
+
+      if (response.ok) {
+        setWaitlistSuccess(true);
+        setWaitlistForm({ email: "", interest: "I'm interested in..." });
+        setTimeout(() => {
+          setWaitlistSuccess(false);
+          closeModal();
+        }, 2000);
+      } else {
+        throw new Error("Submission failed");
+      }
+    } catch (error) {
+      console.error("Waitlist form error:", error);
+    } finally {
+      setWaitlistSubmitting(false);
+    }
+  };
+
+  const toggleFeatureCategory = (category) => {
+    setFeatureForm((prev) => ({
+      ...prev,
+      categories: prev.categories.includes(category)
+        ? prev.categories.filter((c) => c !== category)
+        : [...prev.categories, category],
+    }));
   };
 
   return (
@@ -67,23 +208,42 @@ const Footer = () => {
                       Stay Updated
                     </h4>
                     <form
+                      name="newsletter-subscription"
+                      method="POST"
+                      data-netlify="true"
+                      data-netlify-honeypot="bot-field"
                       onSubmit={handleNewsletterSubmit}
                       className="flex gap-2"
                     >
                       <input
+                        type="hidden"
+                        name="form-name"
+                        value="newsletter-subscription"
+                      />
+                      <input type="hidden" name="bot-field" />
+
+                      <input
                         type="email"
+                        name="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email"
                         required
-                        className="flex-1 px-4 py-2 rounded-lg bg-background-surface border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent"
+                        disabled={isNewsletterSubmitting}
+                        className="flex-1 px-4 py-2 rounded-lg bg-background-surface border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue focus:border-transparent disabled:opacity-50"
                       />
                       <button
                         type="submit"
-                        disabled={isNewsletterSubscribed}
-                        className="px-6 py-2 bg-primary-blue hover:bg-primary-blue/90 text-white rounded-lg font-medium transition-all duration-200"
+                        disabled={
+                          isNewsletterSubscribed || isNewsletterSubmitting
+                        }
+                        className="px-6 py-2 bg-primary-blue hover:bg-primary-blue/90 text-white rounded-lg font-medium transition-all duration-200 disabled:opacity-50"
                       >
-                        {isNewsletterSubscribed ? "✓" : "Subscribe"}
+                        {isNewsletterSubmitting
+                          ? "..."
+                          : isNewsletterSubscribed
+                          ? "✓"
+                          : "Subscribe"}
                       </button>
                     </form>
                   </div>
@@ -278,7 +438,7 @@ const Footer = () => {
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-text-primary">
-                  Contact Us
+                  {contactSuccess ? "Message Sent!" : "Contact Us"}
                 </h3>
                 <button
                   onClick={closeModal}
@@ -299,32 +459,97 @@ const Footer = () => {
                   </svg>
                 </button>
               </div>
-              <form className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Your Name"
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue"
-                />
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue"
-                />
-                <select className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-blue">
-                  <option>General Inquiry</option>
-                  <option>Technical Support</option>
-                  <option>Partnership</option>
-                  <option>Press</option>
-                </select>
-                <textarea
-                  placeholder="Your Message"
-                  rows="4"
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue resize-none"
-                ></textarea>
-                <button type="submit" className="w-full btn-primary">
-                  Send Message
-                </button>
-              </form>
+
+              {contactSuccess ? (
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-4">✓</div>
+                  <p className="text-text-secondary">
+                    We'll get back to you soon!
+                  </p>
+                </div>
+              ) : (
+                <form
+                  name="contact-form"
+                  method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  onSubmit={handleContactSubmit}
+                  className="space-y-4"
+                >
+                  <input type="hidden" name="form-name" value="contact-form" />
+                  <input type="hidden" name="bot-field" />
+
+                  <input
+                    type="text"
+                    name="name"
+                    value={contactForm.name}
+                    onChange={(e) =>
+                      setContactForm((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
+                    placeholder="Your Name"
+                    required
+                    disabled={contactSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue disabled:opacity-50"
+                  />
+                  <input
+                    type="email"
+                    name="email"
+                    value={contactForm.email}
+                    onChange={(e) =>
+                      setContactForm((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
+                    placeholder="Your Email"
+                    required
+                    disabled={contactSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue disabled:opacity-50"
+                  />
+                  <select
+                    name="inquiry"
+                    value={contactForm.inquiry}
+                    onChange={(e) =>
+                      setContactForm((prev) => ({
+                        ...prev,
+                        inquiry: e.target.value,
+                      }))
+                    }
+                    disabled={contactSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-blue disabled:opacity-50"
+                  >
+                    <option>General Inquiry</option>
+                    <option>Technical Support</option>
+                    <option>Partnership</option>
+                    <option>Press</option>
+                  </select>
+                  <textarea
+                    name="message"
+                    value={contactForm.message}
+                    onChange={(e) =>
+                      setContactForm((prev) => ({
+                        ...prev,
+                        message: e.target.value,
+                      }))
+                    }
+                    placeholder="Your Message"
+                    rows="4"
+                    required
+                    disabled={contactSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue resize-none disabled:opacity-50"
+                  ></textarea>
+                  <button
+                    type="submit"
+                    disabled={contactSubmitting}
+                    className="w-full btn-primary disabled:opacity-50"
+                  >
+                    {contactSubmitting ? "Sending..." : "Send Message"}
+                  </button>
+                </form>
+              )}
             </motion.div>
           </motion.div>
         )}
@@ -347,7 +572,7 @@ const Footer = () => {
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-text-primary">
-                  Suggest a Feature
+                  {featureSuccess ? "Suggestion Sent!" : "Suggest a Feature"}
                 </h3>
                 <button
                   onClick={closeModal}
@@ -368,41 +593,88 @@ const Footer = () => {
                   </svg>
                 </button>
               </div>
-              <form className="space-y-4">
-                <input
-                  type="text"
-                  placeholder="Feature Title"
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue"
-                />
-                <textarea
-                  placeholder="Describe your feature idea..."
-                  rows="5"
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue resize-none"
-                ></textarea>
-                <div className="flex gap-2">
-                  <button
-                    type="button"
-                    className="px-3 py-1 text-sm bg-primary-blue/20 text-primary-blue rounded-full"
-                  >
-                    📊 Analytics
-                  </button>
-                  <button
-                    type="button"
-                    className="px-3 py-1 text-sm bg-primary-green/20 text-primary-green rounded-full"
-                  >
-                    🤖 AI
-                  </button>
-                  <button
-                    type="button"
-                    className="px-3 py-1 text-sm bg-primary-purple/20 text-primary-purple rounded-full"
-                  >
-                    📱 Mobile
-                  </button>
+
+              {featureSuccess ? (
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-4">✓</div>
+                  <p className="text-text-secondary">
+                    Thanks for your suggestion!
+                  </p>
                 </div>
-                <button type="submit" className="w-full btn-primary">
-                  Submit Suggestion
-                </button>
-              </form>
+              ) : (
+                <form
+                  name="feature-suggestion"
+                  method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  onSubmit={handleFeatureSubmit}
+                  className="space-y-4"
+                >
+                  <input
+                    type="hidden"
+                    name="form-name"
+                    value="feature-suggestion"
+                  />
+                  <input type="hidden" name="bot-field" />
+
+                  <input
+                    type="text"
+                    name="title"
+                    value={featureForm.title}
+                    onChange={(e) =>
+                      setFeatureForm((prev) => ({
+                        ...prev,
+                        title: e.target.value,
+                      }))
+                    }
+                    placeholder="Feature Title"
+                    required
+                    disabled={featureSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue disabled:opacity-50"
+                  />
+                  <textarea
+                    name="description"
+                    value={featureForm.description}
+                    onChange={(e) =>
+                      setFeatureForm((prev) => ({
+                        ...prev,
+                        description: e.target.value,
+                      }))
+                    }
+                    placeholder="Describe your feature idea..."
+                    rows="5"
+                    required
+                    disabled={featureSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue resize-none disabled:opacity-50"
+                  ></textarea>
+                  <div className="flex gap-2 flex-wrap">
+                    {["Analytics", "AI", "Mobile"].map((category) => (
+                      <button
+                        key={category}
+                        type="button"
+                        onClick={() => toggleFeatureCategory(category)}
+                        disabled={featureSubmitting}
+                        className={`px-3 py-1 text-sm rounded-full transition-all ${
+                          featureForm.categories.includes(category)
+                            ? "bg-primary-blue text-white"
+                            : "bg-primary-blue/20 text-primary-blue hover:bg-primary-blue/30"
+                        } disabled:opacity-50`}
+                      >
+                        {category === "Analytics" && "📊"}{" "}
+                        {category === "AI" && "🤖"}{" "}
+                        {category === "Mobile" && "📱"} {category}
+                      </button>
+                    ))}
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={featureSubmitting}
+                    className="w-full btn-primary disabled:opacity-50"
+                  >
+                    {featureSubmitting ? "Submitting..." : "Submit Suggestion"}
+                  </button>
+                </form>
+              )}
             </motion.div>
           </motion.div>
         )}
@@ -425,14 +697,14 @@ const Footer = () => {
             >
               <div className="flex justify-between items-center mb-6">
                 <h3 className="text-xl font-bold text-text-primary">
-                  Join Waitlist
+                  {waitlistSuccess ? "You're In!" : "Join Waitlist"}
                 </h3>
                 <button
                   onClick={closeModal}
                   className="text-text-muted hover:text-text-primary"
                 >
                   <svg
-                    className="w-6"
+                    className="w-6 h-6"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
@@ -446,23 +718,68 @@ const Footer = () => {
                   </svg>
                 </button>
               </div>
-              <form className="space-y-4">
-                <input
-                  type="email"
-                  placeholder="Your Email"
-                  className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue"
-                />
-                <select className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-blue">
-                  <option>I'm interested in...</option>
-                  <option>Early Access</option>
-                  <option>Beta Testing</option>
-                  <option>Product Updates</option>
-                  <option>All Features</option>
-                </select>
-                <button type="submit" className="w-full btn-primary">
-                  Notify Me
-                </button>
-              </form>
+
+              {waitlistSuccess ? (
+                <div className="text-center py-8">
+                  <div className="text-4xl mb-4">🎉</div>
+                  <p className="text-text-secondary">
+                    We'll notify you when we launch!
+                  </p>
+                </div>
+              ) : (
+                <form
+                  name="waitlist-form"
+                  method="POST"
+                  data-netlify="true"
+                  data-netlify-honeypot="bot-field"
+                  onSubmit={handleWaitlistSubmit}
+                  className="space-y-4"
+                >
+                  <input type="hidden" name="form-name" value="waitlist-form" />
+                  <input type="hidden" name="bot-field" />
+
+                  <input
+                    type="email"
+                    name="email"
+                    value={waitlistForm.email}
+                    onChange={(e) =>
+                      setWaitlistForm((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
+                    placeholder="Your Email"
+                    required
+                    disabled={waitlistSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary placeholder-text-light focus:outline-none focus:ring-2 focus:ring-primary-blue disabled:opacity-50"
+                  />
+                  <select
+                    name="interest"
+                    value={waitlistForm.interest}
+                    onChange={(e) =>
+                      setWaitlistForm((prev) => ({
+                        ...prev,
+                        interest: e.target.value,
+                      }))
+                    }
+                    disabled={waitlistSubmitting}
+                    className="w-full px-4 py-3 rounded-lg bg-background border border-border text-text-primary focus:outline-none focus:ring-2 focus:ring-primary-blue disabled:opacity-50"
+                  >
+                    <option>I'm interested in...</option>
+                    <option>Early Access</option>
+                    <option>Beta Testing</option>
+                    <option>Product Updates</option>
+                    <option>All Features</option>
+                  </select>
+                  <button
+                    type="submit"
+                    disabled={waitlistSubmitting}
+                    className="w-full btn-primary disabled:opacity-50"
+                  >
+                    {waitlistSubmitting ? "Adding..." : "Notify Me"}
+                  </button>
+                </form>
+              )}
             </motion.div>
           </motion.div>
         )}

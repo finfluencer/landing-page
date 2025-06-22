@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { testimonials } from "../data/landingPageData";
+import { useModal } from "../context/ModalContext";
 
 const Testimonials = () => {
   const [currentTestimonial, setCurrentTestimonial] = useState(0);
+  const { openModal } = useModal();
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -38,17 +40,17 @@ const Testimonials = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-4">
-            <span className="gradient-text">What Our Users Say</span>
+            <span className="gradient-text">What People Think</span>
           </h2>
           <p className="text-xl text-text-secondary max-w-2xl mx-auto">
-            Real feedback from traders using Finfluencer to transform their
-            trading
+            Early feedback on our concept from finance professionals and
+            investment enthusiasts
           </p>
         </motion.div>
 
         {/* Testimonials Carousel */}
         <div className="max-w-4xl mx-auto relative">
-          <div className="relative h-64 overflow-hidden">
+          <div className="relative min-h-[300px] md:h-64 overflow-hidden">
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentTestimonial}
@@ -56,24 +58,24 @@ const Testimonials = () => {
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -300 }}
                 transition={{ duration: 0.5, ease: "easeInOut" }}
-                className="absolute inset-0 flex items-center justify-center"
+                className="absolute inset-0 flex items-center justify-center p-4"
               >
-                <div className="text-center max-w-3xl">
+                <div className="text-center max-w-3xl w-full">
                   {/* Quote */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.2, duration: 0.5 }}
-                    className="mb-8"
+                    className="mb-6 md:mb-8"
                   >
                     <svg
-                      className="w-12 h-12 text-primary-blue/30 mx-auto mb-4"
+                      className="w-8 h-8 md:w-12 md:h-12 text-primary-blue/30 mx-auto mb-3 md:mb-4"
                       fill="currentColor"
                       viewBox="0 0 24 24"
                     >
                       <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z" />
                     </svg>
-                    <blockquote className="text-2xl md:text-3xl font-medium text-text-primary leading-relaxed">
+                    <blockquote className="text-lg md:text-2xl lg:text-3xl font-medium text-text-primary leading-relaxed">
                       "{testimonials[currentTestimonial].text}"
                     </blockquote>
                   </motion.div>
@@ -83,19 +85,22 @@ const Testimonials = () => {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ delay: 0.4, duration: 0.5 }}
-                    className="flex items-center justify-center gap-4"
+                    className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4"
                   >
                     {/* Avatar */}
-                    <div className="w-12 h-12 bg-gradient-to-br from-primary-blue to-primary-purple rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-12 h-12 bg-gradient-to-br from-primary-blue to-primary-purple rounded-full flex items-center justify-center text-white font-bold flex-shrink-0">
                       {testimonials[currentTestimonial].avatar}
                     </div>
 
                     {/* Name and Rating */}
-                    <div className="text-left">
-                      <p className="text-lg font-semibold text-text-primary">
+                    <div className="text-center sm:text-left">
+                      <p className="text-base md:text-lg font-semibold text-text-primary">
                         {testimonials[currentTestimonial].name}
                       </p>
-                      <div className="flex items-center gap-1">
+                      <p className="text-sm text-text-secondary mb-1">
+                        {testimonials[currentTestimonial].designation}
+                      </p>
+                      <div className="flex items-center justify-center sm:justify-start gap-1">
                         {[
                           ...Array(testimonials[currentTestimonial].rating),
                         ].map((_, i) => (
@@ -196,10 +201,13 @@ const Testimonials = () => {
           className="text-center mt-16"
         >
           <p className="text-text-secondary mb-6">
-            Join our community of successful traders
+            Be among the first to experience the future of investment guidance
           </p>
-          <button className="btn-primary text-lg px-8 py-4">
-            Get Started Today
+          <button
+            onClick={() => openModal("waitlist")}
+            className="btn-primary text-lg px-8 py-4"
+          >
+            Join the Waitlist
           </button>
         </motion.div>
       </div>

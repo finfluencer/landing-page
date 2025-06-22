@@ -3,10 +3,10 @@
  */
 module.exports = {
   siteMetadata: {
-    title: "Finfluencer - AI-Powered Trading Insights",
+    title: "Finfluencer - Personal Finance Influencers",
     description:
       "Never miss a market move with AI-powered buy/sell alerts and plain-English insights.",
-    siteUrl: `https://www.finfluencer.ai`,
+    siteUrl: `https://www.finfluencer.netlify.app`,
   },
   plugins: [
     {
