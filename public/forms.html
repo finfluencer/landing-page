@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Netlify Forms - Hidden</title>
+  </head>
+  <body>
+    <!-- This file is required for Netlify Forms to work with SPAs -->
+    <!-- It should not be visible to users -->
+
+    <!-- Hero Email Capture Form -->
+    <form name="hero-email-capture" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+    </form>
+
+    <!-- Newsletter Subscription Form -->
+    <form
+      name="newsletter-subscription"
+      netlify
+      netlify-honeypot="bot-field"
+      hidden
+    >
+      <input type="email" name="email" />
+    </form>
+
+    <!-- Contact Form -->
+    <form name="contact-form" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <select name="inquiry">
+        <option>General Inquiry</option>
+        <option>Technical Support</option>
+        <option>Partnership</option>
+        <option>Press</option>
+      </select>
+      <textarea name="message"></textarea>
+    </form>
+
+    <!-- Feature Suggestion Form -->
+    <form name="feature-suggestion" netlify netlify-honeypot="bot-field" hidden>
+      <input type="text" name="title" />
+      <textarea name="description"></textarea>
+      <input type="text" name="categories" />
+    </form>
+
+    <!-- Waitlist Form -->
+    <form name="waitlist-form" netlify netlify-honeypot="bot-field" hidden>
+      <input type="email" name="email" />
+      <select name="interest">
+        <option>I'm interested in...</option>
+        <option>Early Access</option>
+        <option>Beta Testing</option>
+        <option>Product Updates</option>
+        <option>All Features</option>
+      </select>
+    </form>
+  </body>
+</html>
